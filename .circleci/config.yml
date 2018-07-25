@@ -1,0 +1,56 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.5-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm install
+      - run: npm run build
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - build
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/repo
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ae:2d:6e:d3:23:93:d9:49:54:0f:07:e3:a5:05:7b:8a"
+      - run:
+          name: Install rsync
+          command: sudo apt install rsync -y
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Deploy front to server
+          command: |
+            rsync -avHr /tmp/build/ -e ssh circleci2@104.196.160.41:/var/www/html
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
