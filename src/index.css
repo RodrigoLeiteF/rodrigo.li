@@ -1,0 +1,27 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Open Sans', sans-serif;
+  background: #201F1D;
+}
+
+a {
+  text-decoration: none;
+  color: #DCDCDC;
+  transition: color .5s ease;
+}
+
+a:hover {
+  color: rgb(165, 165, 165);
+}
+
+.content {
+  background-color: #86868515;
+  min-height: 400px;
+  min-width: 800px;
+}

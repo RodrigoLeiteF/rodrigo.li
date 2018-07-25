@@ -1,0 +1,26 @@
+.mainContent {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+  justify-content: space-around;
+  min-width: 800px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.x {
+  transform-origin: center center;
+  animation: line1 infinite 20s linear;
+}
+
+@keyframes line1 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
